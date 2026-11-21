@@ -1,74 +1,51 @@
-#include<stdio.h>
-void print(void *p,char t);
-int add(int a,int b);
-int sub(int a,int b);
-int mul(int a,int b);
-int divi(int a,int b);
-int calculate(int a,int b,int (*op)(int,int));
-int main()
-{
-int a,b,ch,res;
-int x=100;
-float y=45.67;
-char z='A';
-int (*op[4])(int,int)={add,sub,mul,divi};
-printf("Smart Calculator\n");
-printf("\nGENERIC DATA PRINTER\n");
-print(&x,'i');
-print(&y,'f');
-print(&z,'c');
-printf("\nCALCULATOR\n");
-printf("Enter first number: ");
-scanf("%d",&a);
-printf("Enter second number: ");
-scanf("%d",&b);
-printf("\n1. Addition\n");
-printf("2. Subtraction\n");
-printf("3. Multiplication\n");
-printf("4. Division\n");
-printf("Enter your choice: ");
-scanf("%d",&ch);
-if(ch<1||ch>4)
-{
-printf("\nInvalid choice\n");
-return 0;
+#include <stdio.h>
+double add(int x,int y){
+    return x+y;
 }
-if(ch==4&&b==0)
-{
-printf("\nError! Division by zero is not allowed\n");
-return 0;
+double sub(int x,int y){
+    return x-y;
 }
-res=calculate(a,b,op[ch-1]);
-printf("\nResult: %d\n",res);
-return 0;
+double multiply(int x,int y){
+    return x*y;
 }
-void print(void *p,char t)
-{
-if(t=='i')
-printf("Integer: %d\n",*(int*)p);
-else if(t=='f')
-printf("Float: %.2f\n",*(float*)p);
-else if(t=='c')
-printf("Character: %c\n",*(char*)p);
+double div(int x,int y){
+    return (double)x/y;
 }
-int add(int a,int b)
-{
-return a+b;
+double calculate(int x,int y,double (*operation)(int,int)){
+    return operation(x,y);
 }
-int sub(int a,int b)
-{
-return a-b;
+int main(){
+    int a=25;
+    float b=5.55;
+    char c='X';
+    void *ptr;
+    ptr=&a;
+    printf("Integer Value: %d\n",*(int*)ptr);
+    ptr=&b;
+    printf("Decimal Value: %.2f\n",*(float*)ptr);
+    ptr=&c;
+    printf("Character Value: %c\n",*(char*)ptr);
+    int x,y;
+    printf("\nEnter number 1: ");
+    scanf("%d",&x);
+    printf("Enter number 2: ");
+    scanf("%d",&y);
+    double (*operations[4])(int,int)={add,sub,multiply,div};
+    printf("\n0. Addition");
+    printf("\n1. Subtraction");
+    printf("\n2. Multiplication");
+    printf("\n3. Division");
+    int choice;
+    printf("\nEnter your choice: ");
+    scanf("%d",&choice);
+    if(choice<0 || choice>3){
+        printf("Invalid choice!");
+    }
+    else if(choice==3 && y==0){
+        printf("Error: Division by zero is not allowed.");
+    }
+    else{
+        printf("Result: %.2f",calculate(x,y,operations[choice]));
+    }
+    return 0;
 }
-int mul(int a,int b)
-{
-return a*b;
-}
-int divi(int a,int b)
-{
-return a/b;
-}
-int calculate(int a,int b,int (*op)(int,int))
-{
-return op(a,b);
-}
-
